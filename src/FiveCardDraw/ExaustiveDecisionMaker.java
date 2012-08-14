@@ -1,6 +1,6 @@
 package FiveCardDraw;
 
-import HandEvaluator.HandEvaluator;
+import HandEvaluator.EquivalenceHandEvaluator;
 import Utils.HandUtils;
 
 import java.util.*;
@@ -23,7 +23,7 @@ public class ExaustiveDecisionMaker {
 
     public void calculateDecisions() {
         if(drawsLeft == 0) {
-            DrawDecision dd = new DrawDecision(0, HandEvaluator.getInstance().evaluateHand(hand));
+            DrawDecision dd = new DrawDecision(0, EquivalenceHandEvaluator.getInstance().evaluateHand(hand));
             decisions.add(dd);
         } else {
             for(int replacementNumber = 0; replacementNumber < 32; replacementNumber++) {

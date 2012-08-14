@@ -3,6 +3,7 @@ package Utils;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -73,7 +74,9 @@ public class HandUtils {
     }
 
     public static int[] randomHand() {
-        Random r = new Random(1234);
+        //Uncomment this to not make it a random hand
+        //Random r = new Random(1234);
+        Random r = new Random();
         int[] retval = new int[5];
         List<Integer> hand = new ArrayList<Integer>();
         while(hand.size() < 5) {
@@ -95,5 +98,15 @@ public class HandUtils {
         rval = rval.substring(0,rval.length()-1);
         rval += "]";
         return rval;
+    }
+
+    public static int handToHandNumber(int hand[]) {
+        Arrays.sort(hand);
+        int retval = 0;
+        for(int count = 0; count < hand.length; count++) {
+            retval *= 52;
+            retval += hand[count];
+        }
+        return retval;
     }
 }

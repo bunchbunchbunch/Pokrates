@@ -1,6 +1,6 @@
 package FiveCardDraw;
 
-import HandEvaluator.HandEvaluator;
+import HandEvaluator.EquivalenceHandEvaluator;
 import Utils.HandUtils;
 
 import java.util.*;
@@ -34,7 +34,7 @@ public class DecisionMakerHigh {
 
     public void calculateDecisions() {
         if(drawsLeft == 0) {
-            DrawDecision dd = new DrawDecision(0,HandEvaluator.getInstance().evaluateHand(hand));
+            DrawDecision dd = new DrawDecision(0, EquivalenceHandEvaluator.getInstance().evaluateHand(hand));
             decisions.add(dd);
         } else {
             for(int replacementNumber = 0; replacementNumber < 32; replacementNumber++) {
@@ -81,13 +81,13 @@ public class DecisionMakerHigh {
         int[] other = {19,13,1,14,2};
         int[] royal = {0,12,11,10,9};
         int[] lowPairWithAce = {0,1,14,32,33};
-        System.out.println(HandEvaluator.getInstance().evaluateHand(acesUp));
+        System.out.println(EquivalenceHandEvaluator.getInstance().evaluateHand(acesUp));
         System.out.println(HandUtils.handToString(acesUp));
-        System.out.println(HandEvaluator.getInstance().evaluateHand(other));
+        System.out.println(EquivalenceHandEvaluator.getInstance().evaluateHand(other));
         System.out.println(HandUtils.handToString(other));
-        System.out.println(HandEvaluator.getInstance().evaluateHand(royal));
+        System.out.println(EquivalenceHandEvaluator.getInstance().evaluateHand(royal));
         System.out.println(HandUtils.handToString(royal));
-        System.out.println(HandEvaluator.getInstance().evaluateHand(lowPairWithAce));
+        System.out.println(EquivalenceHandEvaluator.getInstance().evaluateHand(lowPairWithAce));
         System.out.println(HandUtils.handToString(lowPairWithAce));
         DecisionMakerHigh dm = new DecisionMakerHigh(acesUp,2,300,true);
         dm.calculateDecisions();

@@ -1,6 +1,6 @@
 package FiveCardDraw;
 
-import HandEvaluator.HandEvaluator;
+import HandEvaluator.EquivalenceHandEvaluator;
 import Utils.HandUtils;
 
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class DrawHand {
     }
     public static void main(String[] args) {
         DrawHand dh = new DrawHand();
-        HandEvaluator he = HandEvaluator.getInstance();
+        EquivalenceHandEvaluator he = EquivalenceHandEvaluator.getInstance();
         System.out.println(he.getHandName(he.evaluateHand(dh.hand)));
         System.out.println(HandUtils.handToString(dh.hand));
 
