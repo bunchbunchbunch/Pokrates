@@ -2,7 +2,9 @@ package Utils;
 
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * User: jobunch
@@ -38,5 +40,60 @@ public class HandUtils {
         retval += "]";
         return retval;
     }
-    
+
+    public static int[] stringToHand(String hand) {
+        int[] retval = new int[hand.length()/2];
+        for(int count = 0; count < hand.length(); count += 2) {
+            int rank = 0;
+            int suit = 0;
+            switch (hand.charAt(count)) {
+                case 'A': case 'a': rank = 0; break;
+                case '2': rank = 1; break;
+                case '3': rank = 2; break;
+                case '4': rank = 3; break;
+                case '5': rank = 4; break;
+                case '6': rank = 5; break;
+                case '7': rank = 6; break;
+                case '8': rank = 7; break;
+                case '9': rank = 8; break;
+                case 'T': case 't': rank = 9; break;
+                case 'J': case 'j': rank = 10; break;
+                case 'Q': case 'q': rank = 11; break;
+                case 'K': case 'k': rank = 12; break;
+            }
+            switch (hand.charAt(count+1)) {
+                case 'C': case 'c': suit = 0; break;
+                case 'D': case 'd': suit = 1; break;
+                case 'H': case 'h': suit = 2; break;
+                case 'S': case 's': suit = 3; break;
+            }
+            retval[count/2] = rank + suit*13;
+        }
+        return retval;
+    }
+
+    public static int[] randomHand() {
+        Random r = new Random(1234);
+        int[] retval = new int[5];
+        List<Integer> hand = new ArrayList<Integer>();
+        while(hand.size() < 5) {
+            int temp = r.nextInt(52);
+            if(!hand.contains(temp)) hand.add(temp);
+        }
+        for(int count = 0; count < 5; count++ ) {
+            retval[count] = hand.get(count);
+        }
+        return retval;
+    }
+
+    public static String decisionNumberToString(int decisionNumber) {
+        String rval = "[";
+        for(int index = 0; index < 5; index++) {
+            rval += decisionNumber%2 + ",";
+            decisionNumber /= 2;
+        }
+        rval = rval.substring(0,rval.length()-1);
+        rval += "]";
+        return rval;
+    }
 }

@@ -1,5 +1,7 @@
 package HandEvaluator;
 
+import Utils.HandUtils;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -58,6 +60,9 @@ public class HandEvaluator {
         }
     }
 
+
+
+
     public static boolean isFlush(int[] hand) {
         int firstSuit = hand[0]/13;
         return hand[1]/13 == firstSuit &&
@@ -72,6 +77,7 @@ public class HandEvaluator {
             retval *= Primes.getPrime(card%13);
         return retval;
     }
+
     public String getHandName(int handNumber) {
         return handNames.get(handNumber);
     }
@@ -85,6 +91,8 @@ public class HandEvaluator {
         int[] aceHighStraight = {9,10,11,12,13};
         System.out.println(he.evaluateHand(aceHighStraight));
         System.out.println(he.getHandName(he.evaluateHand(aceHighStraight)));
+
+        System.out.println(he.getHandName(he.evaluateHand(HandUtils.stringToHand("AdAsAhKcKs"))));
     }
 
 }

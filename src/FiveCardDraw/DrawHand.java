@@ -1,12 +1,12 @@
-package FiveCardDrawHigh;
+package FiveCardDraw;
 
 import HandEvaluator.HandEvaluator;
 import Utils.HandUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * User: jobunch
@@ -48,6 +48,12 @@ public class DrawHand {
             cardsToReplace/=2;
         }
     }
+
+    //Ouch this hurts -- this takes a lot of time
+    public Set<DrawHand> replaceCardsAllPossibilities(int cardsToReplace) {
+        return null;
+    }
+
 
 
     public void replaceCardWithRandom(int index) {
