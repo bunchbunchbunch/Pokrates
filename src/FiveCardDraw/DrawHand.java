@@ -61,7 +61,12 @@ public class DrawHand implements Cloneable {
         }
     }
 
-    //Ouch this hurts -- this takes a lot of time
+    /**
+     * Replaces all cards given the replacement number, but not to exceed the total number of hands in maxSize.
+     * @param cardsToReplace
+     * @param maxSize
+     * @return
+     */
     public List<DrawHand> replaceCardsAllPossibilities(int cardsToReplace, int maxSize) {
         List<DrawHand> retval = new ArrayList<DrawHand>();
         if(cardReplacementPossibilites(cardsToReplace) > maxSize) {
@@ -136,11 +141,11 @@ public class DrawHand implements Cloneable {
         EquivalenceHandEvaluator he = EquivalenceHandEvaluator.getInstance();
         //System.out.println(he.getHandName(he.evaluateHand(dh.hand)));
         System.out.println(HandUtils.handToString(dh.hand));
-        List<DrawHand> rp = dh.replaceCardsAllPossibilities(1,10000);
+        List<DrawHand> rp = dh.replaceCardsAllPossibilities(7,10000);
         for(DrawHand temp: rp) {
             System.out.println(HandUtils.handToString(temp.hand));
         }
-        System.out.println();
+        System.out.println(rp.size());
 //        dh.replaceCards(3);
 //        System.out.println(HandUtils.handToString(dh.hand));
 //
