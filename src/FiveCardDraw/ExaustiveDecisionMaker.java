@@ -1,6 +1,7 @@
 package FiveCardDraw;
 
 import HandEvaluator.EquivalenceHandEvaluator;
+import HandEvaluator.HandEvaluator;
 import Utils.HandUtils;
 
 import java.util.*;
@@ -11,34 +12,36 @@ import java.util.*;
  */
 public class ExaustiveDecisionMaker {
 
-    private int drawsLeft;
     private Set<DrawDecision> decisions;
-    int[] hand;
+    private HandEvaluator handEvaluator;
+    private int bruteForceThreshold;
+    private int[] hand;
 
-    public ExaustiveDecisionMaker(int[] hand, int drawsLeft) {
+    public ExaustiveDecisionMaker(int[] hand, HandEvaluator handEvaluator) {
         this.hand = hand;
-        this.drawsLeft = drawsLeft;
+        this.handEvaluator = handEvaluator;
         decisions = new TreeSet<DrawDecision>();
     }
 
+    public ExaustiveDecisionMaker(int[] hand, HandEvaluator handEvaluator, int bruteForceThreshold) {
+        this(hand, handEvaluator);
+        this.bruteForceThreshold = bruteForceThreshold;
+
+    }
     public void calculateDecisions() {
-        if(drawsLeft == 0) {
-            DrawDecision dd = new DrawDecision(0, EquivalenceHandEvaluator.getInstance().evaluateHand(hand));
-            decisions.add(dd);
-        } else {
+
             for(int replacementNumber = 0; replacementNumber < 32; replacementNumber++) {
 
 
                 DrawHand dh = new DrawHand(Arrays.copyOf(hand, hand.length));
                 //This does not work right now, need to replace with Exaustive replace.
                 dh.replaceCards(replacementNumber);
-                ExaustiveDecisionMaker edm = new ExaustiveDecisionMaker(Arrays.copyOf(dh.hand,hand.length), drawsLeft-1);
-                edm.calculateDecisions();
-
-                DrawDecision dd = new DrawDecision(replacementNumber,edm.bestDecision().averageHandMade);
-                decisions.add(dd);
+//                ExaustiveDecisionMaker edm = new ExaustiveDecisionMaker(Arrays.copyOf(dh.hand,hand.length), drawsLeft-1);
+//                edm.calculateDecisions();
+//
+//                DrawDecision dd = new DrawDecision(replacementNumber,edm.bestDecision().averageHandMade);
+//                decisions.add(dd);
             }
-        }
     }
 
     public DrawDecision bestDecision() {
@@ -63,10 +66,10 @@ public class ExaustiveDecisionMaker {
         for(int trials = 0; trials < 10; trials++) {
             int[] hand = HandUtils.randomHand();
             System.out.println("Hand: " + HandUtils.handToString(hand));
-            ExaustiveDecisionMaker edm = new ExaustiveDecisionMaker(hand, 1);
-            edm.calculateDecisions();
-            System.out.println("Decision: " + HandUtils.decisionNumberToString(edm.bestDecision().cardReplacementNumber));
-            System.out.println(edm.decisions);
+//            ExaustiveDecisionMaker edm = new ExaustiveDecisionMaker(hand, 1);
+//            edm.calculateDecisions();
+//            System.out.println("Decision: " + HandUtils.decisionNumberToString(edm.bestDecision().cardReplacementNumber));
+//            System.out.println(edm.decisions);
 
         }
     }
