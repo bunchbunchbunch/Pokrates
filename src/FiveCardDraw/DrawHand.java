@@ -76,11 +76,7 @@ public class DrawHand implements Cloneable {
                 retval.add(temp);
             }
         } else {
-            System.out.println("HERE");
-            System.out.println(getDeck());
-            System.out.println(SubsetUtils.onesInBaseTwo(cardsToReplace));
             List<List<Integer>> replacementSets = SubsetUtils.subset(getDeck(), SubsetUtils.onesInBaseTwo(cardsToReplace));
-            System.out.println(replacementSets);
             for(List<Integer> replacementCards : replacementSets) {
                 DrawHand temp = (DrawHand)this.clone();
                 temp.replaceCards(cardsToReplace,replacementCards);
@@ -137,11 +133,12 @@ public class DrawHand implements Cloneable {
 
     }
     public static void main(String[] args) throws CloneNotSupportedException {
-        DrawHand dh = new DrawHand();
+        int[] hand = {0,12,11,10,9};
+        DrawHand dh = new DrawHand(hand);
         EquivalenceHandEvaluator he = EquivalenceHandEvaluator.getInstance();
         //System.out.println(he.getHandName(he.evaluateHand(dh.hand)));
         System.out.println(HandUtils.handToString(dh.hand));
-        List<DrawHand> rp = dh.replaceCardsAllPossibilities(7,10000);
+        List<DrawHand> rp = dh.replaceCardsAllPossibilities(22,10000);
         for(DrawHand temp: rp) {
             System.out.println(HandUtils.handToString(temp.hand));
         }

@@ -18,7 +18,6 @@ public class SubsetUtils {
             toAdd.add(value);
             rval.add(toAdd);
         }
-        System.out.println(rval);
         while(rval.get(0).size() < size) {
             List<T> temp = rval.get(0);
             rval.remove(0);

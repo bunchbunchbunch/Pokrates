@@ -73,6 +73,15 @@ public class HandUtils {
         return retval;
     }
 
+    public static String handToNumberString(int []hand) {
+        String rval = "[";
+        for(int count = 0; count < hand.length - 1; count++) {
+            rval += hand[count] + ",";
+        }
+        rval += hand[hand.length-1] + "]";
+        return rval;
+    }
+    
     public static int[] randomHand() {
         //Uncomment this to not make it a random hand
         //Random r = new Random(1234);
@@ -90,7 +99,7 @@ public class HandUtils {
     }
 
     public static String decisionNumberToString(int decisionNumber) {
-        String rval = "[";
+        String rval = "{"+decisionNumber+"}[";
         for(int index = 0; index < 5; index++) {
             rval += decisionNumber%2 + ",";
             decisionNumber /= 2;
@@ -101,11 +110,12 @@ public class HandUtils {
     }
 
     public static int handToHandNumber(int hand[]) {
-        Arrays.sort(hand);
+        int[] temp = Arrays.copyOf(hand, hand.length);
+        Arrays.sort(temp);
         int retval = 0;
-        for(int count = 0; count < hand.length; count++) {
+        for(int count = 0; count < temp.length; count++) {
             retval *= 52;
-            retval += hand[count];
+            retval += temp[count];
         }
         return retval;
     }

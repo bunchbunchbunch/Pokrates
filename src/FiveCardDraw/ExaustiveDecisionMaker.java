@@ -1,6 +1,6 @@
 package FiveCardDraw;
 
-import HandEvaluator.EquivalenceHandEvaluator;
+import HandEvaluator.FileHandEvaluator;
 import HandEvaluator.HandEvaluator;
 import Utils.HandUtils;
 
@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class ExaustiveDecisionMaker {
 
-    private Set<DrawDecision> decisions;
+    private List<DrawDecision> decisions;
     private HandEvaluator handEvaluator;
     private int bruteForceThreshold;
     private int[] hand;
@@ -20,7 +20,7 @@ public class ExaustiveDecisionMaker {
     public ExaustiveDecisionMaker(int[] hand, HandEvaluator handEvaluator) {
         this.hand = hand;
         this.handEvaluator = handEvaluator;
-        decisions = new TreeSet<DrawDecision>();
+        decisions = new ArrayList<DrawDecision>();
     }
 
     public ExaustiveDecisionMaker(int[] hand, HandEvaluator handEvaluator, int bruteForceThreshold) {
@@ -29,19 +29,25 @@ public class ExaustiveDecisionMaker {
 
     }
     public void calculateDecisions() {
+        DrawHand dh = new DrawHand(hand);
+        for(int replacementNumber = 0; replacementNumber < 32; replacementNumber++) {
 
-            for(int replacementNumber = 0; replacementNumber < 32; replacementNumber++) {
 
-
-                DrawHand dh = new DrawHand(Arrays.copyOf(hand, hand.length));
-                //This does not work right now, need to replace with Exaustive replace.
-                dh.replaceCards(replacementNumber);
-//                ExaustiveDecisionMaker edm = new ExaustiveDecisionMaker(Arrays.copyOf(dh.hand,hand.length), drawsLeft-1);
-//                edm.calculateDecisions();
-//
-//                DrawDecision dd = new DrawDecision(replacementNumber,edm.bestDecision().averageHandMade);
-//                decisions.add(dd);
+            List<DrawHand> possibleHands = dh.replaceCardsAllPossibilities(replacementNumber, bruteForceThreshold);
+            if(possibleHands.size() > 0) {
+                double averageHandMade = 0.0;
+                for(DrawHand temp: possibleHands) {
+                    int handValue = handEvaluator.evaluateHand(temp.hand);
+                    averageHandMade += handValue;
+                }
+                averageHandMade /= possibleHands.size();
+                DrawDecision dd = new DrawDecision(replacementNumber, averageHandMade);
+                decisions.add(dd);
+            } else {
+                DrawDecision dd = new DrawDecision(replacementNumber, handEvaluator.evaluateHand(hand));
+                decisions.add(dd);
             }
+        }
     }
 
     public DrawDecision bestDecision() {
@@ -54,23 +60,46 @@ public class ExaustiveDecisionMaker {
         return best;
     }
 
+    public DrawDecision worstDecision() {
+        DrawDecision worst = null;
+        for(DrawDecision dd : decisions) {
+            if(worst == null || worst.averageHandMade < dd.averageHandMade) {
+                worst = dd;
+            }
+        }
+        return worst;
+    }
     public static void main(String args[] ) {
-//        //testing loading up a collection with 2.6 million items
-//        Map<Integer, String> test = new HashMap<Integer, String>();
-//        for(int count = 0; count < 2600000; count++ ) {
-//            test.put(new Integer(count), ""+count);
-//            if(count % 10000 == 0 ) System.out.println("At: " + count);
-//        }
-//        System.out.println("Done");
 
-        for(int trials = 0; trials < 10; trials++) {
-            int[] hand = HandUtils.randomHand();
-            System.out.println("Hand: " + HandUtils.handToString(hand));
-//            ExaustiveDecisionMaker edm = new ExaustiveDecisionMaker(hand, 1);
+//        HandEvaluator he = new FileHandEvaluator("resources/BaseRanks2.csv");
+//        for(int trials = 0; trials < 10; trials++) {
+//            int[] hand = HandUtils.randomHand();
+//            System.out.println("Hand: " + HandUtils.handToString(hand));
+//            System.out.println(HandUtils.handToNumberString(hand));
+//
+//            ExaustiveDecisionMaker edm = new ExaustiveDecisionMaker(hand, he, 100000);
+//
+//
+//
 //            edm.calculateDecisions();
+//            Collections.sort(edm.decisions);
 //            System.out.println("Decision: " + HandUtils.decisionNumberToString(edm.bestDecision().cardReplacementNumber));
 //            System.out.println(edm.decisions);
+//
+//        }
+        HandEvaluator he = new FileHandEvaluator("resources/BaseRanks2.csv");
+        int hand[] = {41,36,47,30,34};
+        System.out.println(HandUtils.handToString(hand));
+        System.out.println(he.evaluateHand(hand));
+        ExaustiveDecisionMaker edm = new ExaustiveDecisionMaker(hand, he, 100000);
 
-        }
+
+
+        edm.calculateDecisions();
+        System.out.println("Decision: " + HandUtils.decisionNumberToString(edm.bestDecision().cardReplacementNumber));
+        Collections.sort(edm.decisions);
+        System.out.println(edm.decisions.size());
+        System.out.println(edm.decisions);
+
     }
 }
